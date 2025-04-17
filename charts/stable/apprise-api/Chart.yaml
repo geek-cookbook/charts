@@ -1,0 +1,22 @@
+---
+apiVersion: v2
+appVersion: v1.2.0
+description: Take advantage of Apprise through your network with a user-friendly API.
+icon: https://raw.githubusercontent.com/bastienwirtz/homer/main/public/logo.png
+home: https://github.com/geek-cookbook/charts/tree/master/charts/stable/homer
+name: apprise-api
+version: 0.0.1
+kubeVersion: ">=1.16.0-0"
+sources:
+  - https://github.com/caronc/apprise-api
+maintainers:
+  - name: funkypenguin
+    email: davidy@funkypenguin.co.nz
+dependencies:
+  - name: common
+    repository: https://library-charts.k8s-at-home.com
+    version: 4.5.2
+annotations:
+  artifacthub.io/changes: |-
+    - kind: changed
+      description: Upgraded `common` chart dependency to version 4.5.2
