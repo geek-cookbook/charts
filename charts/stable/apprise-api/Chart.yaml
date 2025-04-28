@@ -5,7 +5,7 @@ description: Take advantage of Apprise through your network with a user-friendly
 icon: https://raw.githubusercontent.com/bastienwirtz/homer/main/public/logo.png
 home: https://github.com/geek-cookbook/charts/tree/master/charts/stable/homer
 name: apprise-api
-version: 0.0.1
+version: 0.0.2
 kubeVersion: ">=1.16.0-0"
 sources:
   - https://github.com/caronc/apprise-api
