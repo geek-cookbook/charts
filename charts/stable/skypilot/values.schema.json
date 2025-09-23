@@ -232,6 +232,17 @@
                 }
             }
         },
+        "cudoCredentials": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "cudoSecretName": {
+                    "type": "string"
+                }
+            }
+        },        
         "extraInitContainers": {
             "type": [
                 "array",
