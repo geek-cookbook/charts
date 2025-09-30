@@ -474,7 +474,7 @@ spec:
           if [ -n "$CUDO_CREDENTIALS" ]; then
             echo "CUDO credentials found in environment variable."
             mkdir -p /root/.config/cudo/
-            cat > /root/.config/cudo/cudo.yml <<'EOF'
+            cat > /root/.config/cudo/cudo.yml <<EOF
           $CUDO_CREDENTIALS
           EOF
           else
