@@ -577,6 +577,10 @@ spec:
       - name: runpod-config
         emptyDir: {}
       {{- end }}
+      {{- if .Values.cudoCredentials.enabled }}
+      - name: cudo-config
+        emptyDir: {}
+      {{- end }}      
       {{- if .Values.lambdaCredentials.enabled }}
       - name: lambda-config
         emptyDir: {}
