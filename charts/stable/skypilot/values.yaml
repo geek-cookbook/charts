@@ -460,6 +460,12 @@ runpodCredentials:
   # Name of the secret containing the RunPod credentials. Only used if enabled is true.
   runpodSecretName: runpod-credentials
 
+# Populate RunPod credentials from the secret with key `api_key`
+paperspaceCredentials:
+  enabled: false
+  # Name of the secret containing the RunPod credentials. Only used if enabled is true.
+  paperspaceSecretName: paperspace-credentials
+
 # Populate CUDO credentials from the secret with key `api_key`
 cudoCredentials:
   enabled: false

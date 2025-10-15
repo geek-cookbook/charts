@@ -303,6 +303,11 @@ spec:
           mountPath: /root/.runpod
           readOnly: true
         {{- end }}
+        {{- if .Values.paperspaceCredentials.enabled }}
+        - name: paperspace-config
+          mountPath: /root/.paperspace
+          readOnly: true
+        {{- end }}
         {{- if .Values.cudoCredentials.enabled }}
         - name: cudo-config
           mountPath: /root/.config/cudo
@@ -460,6 +465,35 @@ spec:
         - name: runpod-config
           mountPath: /root/.runpod
       {{- end }}
+      {{- if .Values.paperspaceCredentials.enabled }}
+      - name: create-paperspace-credentials
+        {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        image: {{ .Values.apiService.image }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Setting up Paperspace credentials..."
+          if [ -n "$PAPERSPACE_API_KEY" ]; then
+            echo "Paperspace credentials found in environment variable."
+            mkdir -p /root/.paperspace
+            echo "{\"apiKey\":\"$PAPERSPACE_API_KEY\"}" > /root/.paperspace/config.json
+          else
+            echo "Paperspace credentials not found in environment variables. Skipping credentials setup."
+            sleep 600
+          fi
+        env:
+        - name: PAPERSPACE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.paperspaceCredentials.paperspaceSecretName }}
+              key: api_key
+        volumeMounts:
+        - name: paperspace-config
+          mountPath: /root/.paperspace
+      {{- end }}
       {{- if .Values.cudoCredentials.enabled }}
       - name: create-cudo-credentials
         {{- with .Values.securityContext }}
@@ -577,6 +611,10 @@ spec:
       - name: runpod-config
         emptyDir: {}
       {{- end }}
+      {{- if .Values.paperspaceCredentials.enabled }}
+      - name: paperspace-config
+        emptyDir: {}
+      {{- end }}      
       {{- if .Values.cudoCredentials.enabled }}
       - name: cudo-config
         emptyDir: {}
