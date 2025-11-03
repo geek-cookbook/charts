@@ -474,7 +474,7 @@ cudoCredentials:
   # Name of the secret containing the CUDO credentials. Only used if enabled is true.
   cudoSecretName: cudo-credentials
 
-# Populate CUDO credentials from the secret with key `api_key`
+# Populate OCI credentials from the secret with key `api_key`
 ociCredentials:
   enabled: false
   # Name of the secret containing the OCI credentials, with required keys "config" and "key". Only used if enabled is true.
