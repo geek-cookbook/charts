@@ -541,7 +541,7 @@ spec:
         args:
         - |
           echo "Setting up OCI credentials..."
-          if [ -n "$OCI_CREDENTIALS_CONFIG" && -n "$OCI_CREDENTIALS_KEY" ]; then
+          if [ -n "$OCI_CREDENTIALS_CONFIG" ] && [ -n "$OCI_CREDENTIALS_KEY" ]; then
             echo "OCI credentials found in environment variable."
             mkdir -p /root/.oci
             cat > /root/.oci/config <<EOF
@@ -549,7 +549,7 @@ spec:
           EOF
             cat > /root/.oci/oci_api_key.pem <<EOF
           $OCI_CREDENTIALS_KEY
-          EOF          
+          EOF
           else
             echo "OCI credentials not found in environment variables. Skipping credentials setup."
             sleep 600
