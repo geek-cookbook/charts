@@ -563,7 +563,7 @@ spec:
         - name: OCI_CREDENTIALS_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.ociCredentials.cudoSecretName }}
+              name: {{ .Values.ociCredentials.ociSecretName }}
               key: key              
         volumeMounts:
         - name: oci-config
