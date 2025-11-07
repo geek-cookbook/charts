@@ -561,7 +561,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.digitaloceanCredentials.digitaloceanSecretName }}
-              key: config
+              key: api_key
         volumeMounts:
         - name: digitalocean-config
           mountPath: /.config/doctl
