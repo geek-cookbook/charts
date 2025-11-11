@@ -4,6 +4,12 @@ apiService:
   image: berkeleyskypilot/skypilot-nightly:latest
   # Number of replicas to deploy - replicas > 1 is not well tested.
   replicas: 1
+
+  # Enable/disable PodDisruptionBudget for the API server when replicas > 1
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+
   preDeployHook: |-
     # Run commands before deploying the API server, e.g. installing an admin policy.
     # Refer to https://docs.skypilot.co/en/latest/cloud-setup/policy.html for more details about admin policy.
