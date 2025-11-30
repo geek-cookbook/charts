@@ -71,6 +71,12 @@
                 "image": {
                     "type": "string"
                 },
+                "imagePullPolicy": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "initialBasicAuthCredentials": {
                     "type": "string"
                 },
@@ -79,6 +85,22 @@
                         "string",
                         "null"
                     ]
+                },
+                "logs": {
+                    "type": "object",
+                    "properties": {
+                        "retention": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "size": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 },
                 "metrics": {
                     "type": "object",
@@ -229,20 +251,12 @@
                 },
                 "secretAccessKeyKeyName": {
                     "type": "string"
+                },
+                "useCredentialsFile": {
+                    "type": "boolean"
                 }
             }
         },
-        "cudoCredentials": {
-            "type": "object",
-            "properties": {
-                "enabled": {
-                    "type": "boolean"
-                },
-                "cudoSecretName": {
-                    "type": "string"
-                }
-            }
-        },        
         "extraInitContainers": {
             "type": [
                 "array",
@@ -261,7 +275,42 @@
                 "gcpSecretName": {
                     "type": "string"
                 },
+                "image": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "projectId": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "global": {
+            "type": "object",
+            "properties": {
+                "extraEnvs": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "imagePullSecrets": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "imageRegistry": {
                     "type": [
                         "string",
                         "null"
@@ -299,18 +348,6 @@
                 "host": {
                     "type": [
                         "string",
-                        "null"
-                    ]
-                },
-                "httpNodePort": {
-                    "type": [
-                        "number",
-                        "null"
-                    ]
-                },
-                "httpsNodePort": {
-                    "type": [
-                        "number",
                         "null"
                     ]
                 },
@@ -380,6 +417,14 @@
                 },
                 "path": {
                     "type": "string"
+                },
+                "tls": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        }
+                    }
                 }
             }
         },
@@ -395,7 +440,16 @@
                         "config": {
                             "type": "object",
                             "properties": {
+                                "gzip-level": {
+                                    "type": "integer"
+                                },
+                                "gzip-min-length": {
+                                    "type": "integer"
+                                },
                                 "http-snippet": {
+                                    "type": "string"
+                                },
+                                "use-gzip": {
                                     "type": "string"
                                 }
                             }
