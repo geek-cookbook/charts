@@ -1,4 +1,5 @@
-{{- if .Values.storage.enabled }}
+{{- $existingClaim := default "" .Values.storage.existingClaim }}
+{{- if and .Values.storage.enabled (eq $existingClaim "") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

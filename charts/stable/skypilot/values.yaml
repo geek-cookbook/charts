@@ -263,6 +263,8 @@ storage:
     #   environment: prod
   # Optional volume name for binding to specific PV
   volumeName: ""
+  # Use an existing PVC instead of creating one
+  existingClaim: ""
   # Optional annotations
   annotations: {}
 

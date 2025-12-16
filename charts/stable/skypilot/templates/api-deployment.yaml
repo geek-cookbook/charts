@@ -706,9 +706,10 @@ spec:
 
       volumes:
       {{- if .Values.storage.enabled }}
+      {{- $claimName := default (printf "%s-state" .Release.Name) .Values.storage.existingClaim }}
       - name: state-volume
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-state
+          claimName: {{ $claimName }}
       {{- else }}
       - name: state-volume
         emptyDir: {}
