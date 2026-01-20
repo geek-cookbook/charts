@@ -12,6 +12,7 @@ Nitter is a free and open source alternative Twitter front-end focused on privac
 
 ## Requirements
 
+
 Kubernetes: `>=1.16.0-0`
 
 ## Dependencies
