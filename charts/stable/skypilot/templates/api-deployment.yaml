@@ -260,6 +260,9 @@ spec:
         - name: state-volume
           mountPath: /root/.sky
           subPath: .sky
+        - name: state-volume
+          mountPath: /root/sky_logs
+          subPath: sky_logs
         {{- if .Values.storage.enabled }}
         - name: state-volume
           mountPath: /root/.ssh # To preserve the SSH keys for the user when using the API server
@@ -387,6 +390,38 @@ spec:
         - name: state-volume
           mountPath: /root/.sky
           subPath: .sky
+      {{- end }}
+      {{- $cleaner := .Values.apiService.cleaner }}
+      {{- if and $cleaner $cleaner.enabled }}
+      - name: skypilot-cleaner
+        {{- with .Values.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        image: {{ include "common.image" (dict "root" . "image" .Values.apiService.image) }}
+        imagePullPolicy: {{ .Values.apiService.imagePullPolicy }}
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          set -euo pipefail
+          cleanup() {
+            dir="$1"
+            mkdir -p "$dir"
+            find "$dir" -mindepth 1 -mtime +{{ default 2 $cleaner.retentionDays }} -print -exec rm -rf {} +
+          }
+          while true; do
+          {{- range $path := default (list "/root/.sky/api_server/clients" "/root/sky_logs") $cleaner.paths }}
+            cleanup "{{ $path }}"
+          {{- end }}
+            sleep {{ default 3600 $cleaner.intervalSeconds }}
+          done
+        volumeMounts:
+        - name: state-volume
+          mountPath: /root/.sky
+          subPath: .sky
+        - name: state-volume
+          mountPath: /root/sky_logs
+          subPath: sky_logs
       {{- end }}
       initContainers:
       {{- if and .Values.awsCredentials.enabled (not .Values.awsCredentials.useCredentialsFile) }}

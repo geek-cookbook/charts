@@ -3,7 +3,7 @@ name: skypilot
 description: A Helm chart for deploying SkyPilot API server on Kubernetes
 icon: "https://raw.githubusercontent.com/skypilot-org/skypilot/master/charts/skypilot/skypilot.svg"
 type: application
-version: 0.0.2-pre-15
+version: 0.0.2-pre-16
 appVersion: "0.0"
 dependencies:
   - name: ingress-nginx

@@ -17,6 +17,29 @@
                         "null"
                     ]
                 },
+                "cleaner": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "intervalSeconds": {
+                            "type": "integer"
+                        },
+                        "paths": {
+                            "type": [
+                                "array",
+                                "null"
+                            ],
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "retentionDays": {
+                            "type": "integer"
+                        }
+                    }
+                },
                 "config": {
                     "type": [
                         "string",
