@@ -56,6 +56,7 @@ spec:
       {{- end }}
       runtimeClassName: {{ .Values.runtimeClassName }}
       terminationGracePeriodSeconds: {{ .Values.apiService.terminationGracePeriodSeconds }}
+      {{- $logPersistence := default (dict "enabled" false) .Values.apiService.logs.persistence }}
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -260,9 +261,10 @@ spec:
         - name: state-volume
           mountPath: /root/.sky
           subPath: .sky
-        - name: state-volume
+        {{- if and $logPersistence $logPersistence.enabled }}
+        - name: log-volume
           mountPath: /root/sky_logs
-          subPath: sky_logs
+        {{- end }}
         {{- if .Values.storage.enabled }}
         - name: state-volume
           mountPath: /root/.ssh # To preserve the SSH keys for the user when using the API server
@@ -410,8 +412,9 @@ spec:
             find "$dir" -mindepth 1 -mtime +{{ default 2 $cleaner.retentionDays }} -print -exec rm -rf {} +
           }
           while true; do
-          {{- range $path := default (list "/root/.sky/api_server/clients" "/root/sky_logs") $cleaner.paths }}
-            cleanup "{{ $path }}"
+            cleanup "/root/.sky/api_server/clients"
+          {{- if and $logPersistence $logPersistence.enabled }}
+            cleanup "/root/sky_logs"
           {{- end }}
             sleep {{ default 3600 $cleaner.intervalSeconds }}
           done
@@ -419,9 +422,10 @@ spec:
         - name: state-volume
           mountPath: /root/.sky
           subPath: .sky
-        - name: state-volume
+        {{- if and $logPersistence $logPersistence.enabled }}
+        - name: log-volume
           mountPath: /root/sky_logs
-          subPath: sky_logs
+        {{- end }}
       {{- end }}
       initContainers:
       {{- if and .Values.awsCredentials.enabled (not .Values.awsCredentials.useCredentialsFile) }}
@@ -748,6 +752,12 @@ spec:
       {{- else }}
       - name: state-volume
         emptyDir: {}
+      {{- end }}
+      {{- if and $logPersistence $logPersistence.enabled }}
+      {{- $logPVCName := printf "%s-logs" .Release.Name }}
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: {{ default $logPVCName $logPersistence.existingClaim }}
       {{- end }}
       {{- if .Values.awsCredentials.enabled }}
       {{- if .Values.awsCredentials.useCredentialsFile }}

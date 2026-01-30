@@ -26,15 +26,6 @@
                         "intervalSeconds": {
                             "type": "integer"
                         },
-                        "paths": {
-                            "type": [
-                                "array",
-                                "null"
-                            ],
-                            "items": {
-                                "type": "string"
-                            }
-                        },
                         "retentionDays": {
                             "type": "integer"
                         }
@@ -120,6 +111,35 @@
                                 },
                                 "size": {
                                     "type": "string"
+                                }
+                            }
+                        },
+                        "persistence": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "existingClaim": {
+                                    "type": "string"
+                                },
+                                "storageClassName": {
+                                    "type": "string"
+                                },
+                                "accessMode": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "string"
+                                },
+                                "selector": {
+                                    "type": "object"
+                                },
+                                "volumeName": {
+                                    "type": "string"
+                                },
+                                "annotations": {
+                                    "type": "object"
                                 }
                             }
                         }

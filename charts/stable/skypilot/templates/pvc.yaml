@@ -1,4 +1,6 @@
 {{- $existingClaim := default "" .Values.storage.existingClaim }}
+{{- $logPersistence := default (dict "enabled" false) .Values.apiService.logs.persistence }}
+{{- $logExisting := default "" $logPersistence.existingClaim }}
 {{- if and .Values.storage.enabled (eq $existingClaim "") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,6 +24,35 @@ spec:
     requests:
       storage: {{ .Values.storage.size }}
   {{- with .Values.storage.selector }}
+  selector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+
+{{- if and $logPersistence.enabled (eq $logExisting "") }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-logs
+  namespace: {{ .Release.Namespace }}
+  {{- with $logPersistence.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if $logPersistence.storageClassName }}
+  storageClassName: {{ $logPersistence.storageClassName }}
+  {{- end }}
+  {{- if $logPersistence.volumeName }}
+  volumeName: {{ $logPersistence.volumeName }}
+  {{- end }}
+  accessModes:
+    - {{ $logPersistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ $logPersistence.size }}
+  {{- with $logPersistence.selector }}
   selector:
     {{- toYaml . | nindent 4 }}
   {{- end }}

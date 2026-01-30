@@ -179,6 +179,23 @@ apiService:
       enabled: true
       # The size of the log file to retain
       size: 10M
+    persistence:
+      # Persist /root/sky_logs on a dedicated PVC
+      enabled: false
+      # Use an existing claim for logs instead of creating a new one
+      existingClaim: ""
+      # Storage class for the log PVC - leave empty for cluster default
+      storageClassName: ""
+      # Access mode for the log PVC
+      accessMode: ReadWriteOnce
+      # Requested size for the log PVC
+      size: 10Gi
+      # Optional selector for binding to specific PVs
+      selector: {}
+      # Optional fixed volume name to bind to
+      volumeName: ""
+      # Optional annotations for the log PVC
+      annotations: {}
 
   # Background cleaner sidecar to prune stale SkyPilot artifacts
   cleaner:
@@ -188,10 +205,7 @@ apiService:
     retentionDays: 2
     # How often to run the cleanup loop (seconds)
     intervalSeconds: 3600
-    # Paths to clean; defaults cover SkyPilot client metadata and log directories
-    paths:
-      - /root/.sky/api_server/clients
-      - /root/sky_logs
+    # Automatically cleans ~/.sky/api_server/clients and, if enabled, persistent log storage
 
   # Image pull policy for the API server pod
   # @schema type: [string, null]
