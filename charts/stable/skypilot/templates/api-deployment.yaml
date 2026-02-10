@@ -416,6 +416,7 @@ spec:
           {{- if and $logPersistence $logPersistence.enabled }}
             cleanup "/root/sky_logs"
           {{- end }}
+            truncate -s0 /root/sky_logs/api_server/requests/managed-job-status-refresh-daemon.log
             sleep {{ default 3600 $cleaner.intervalSeconds }}
           done
         volumeMounts:
